@@ -1,79 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>BILAL-MD Pairing</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-    }
-    h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      font-size: 16px;
-    }
-    button {
-      background: #4CAF50;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      width: 100%;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 15px;
-      color: #444;
-      text-align: left;
-      word-break: break-all;
-    }
-    .muted {
-      font-size: 13px;
-      color: #777;
-    }
+    :root{--bg:#f4f7fb;--card:#fff;--accent:#0ea5a3;--muted:#6b7280}
+    *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:20px}
+    .card{width:100%;max-width:560px;background:var(--card);padding:22px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.08);border:1px solid rgba(0,0,0,0.04)}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0 0 16px;color:var(--muted);font-size:13px}
+    label{display:block;margin-top:10px;margin-bottom:6px;color:var(--muted);font-size:13px}
+    input[type="text"], textarea {width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e6eef6;background:#fbfdff;font-size:14px;outline:none}
+    textarea{min-height:80px;resize:vertical}
+    .row{display:flex;gap:8px;align-items:center}
+    button{padding:10px 12px;border-radius:8px;border:0;background:linear-gradient(90deg,var(--accent),#06b6d4);color:#fff;font-weight:600;cursor:pointer}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .result{margin-top:14px;padding:12px;border-radius:8px;background:#f8fafc;border:1px solid #eef2f7}
+    .muted{color:var(--muted);font-size:13px}
+    .code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;font-weight:700}
+    .actions{display:flex;gap:8px;margin-top:10px}
+    .small{font-size:12px;color:var(--muted)}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>BILAL-MD Pairing</h2>
-    <input type="text" id="numberInput" placeholder="Enter WhatsApp Number e.g. 923001234567" />
-    <button onclick="requestPair()">Get Pairing Code</button>
-    
-    <div class="result">
-      <p><strong>Session ID:</strong> <span id="sessionId">—</span></p>
-      <p><strong>Pairing Code:</strong> <span id="pairCode">—</span></p>
-      <p class="muted" id="extraMsg"></p>
+  <main class="card" role="main">
+    <h1>BILAL-MD Pairing</h1>
+    <p class="lead">Apna WhatsApp number daalo (country code ke sath, bina +). Get Pairing Code, phir session + message WhatsApp pe bhejo.</p>
+
+    <label for="numberInput">WhatsApp Number (e.g. 923001234567)</label>
+    <div class="row">
+      <input id="numberInput" type="text" placeholder="923001234567" inputmode="tel" />
+      <button id="getBtn">Get Pairing Code</button>
     </div>
-  </div>
+
+    <div class="result" id="status" style="display:none;">
+      <div id="loading" class="muted small" style="display:none">Requesting pairing…</div>
+
+      <div id="showData" style="display:none;margin-top:8px">
+        <div class="muted small">Session ID:</div>
+        <div class="code" id="sessionId">—</div>
+
+        <div style="margin-top:8px" class="muted small">Pairing Code:</div>
+        <div class="code" id="pairCode">—</div>
+
+        <label for="customMsg">Custom message (will be sent with session & code)</label>
+        <textarea id="customMsg" placeholder="Type your message here (optional)"></textarea>
+
+        <div class="actions">
+          <button id="sendWhatsAppBtn">Send to WhatsApp</button>
+          <button id="copyMsgBtn">Copy Message</button>
+        </div>
+
+        <div class="muted small" style="margin-top:8px">Tip: If number field left empty, WhatsApp share dialog will open and you can choose recipient.</div>
+      </div>
+
+      <div id="errorBox" style="display:none;margin-top:8px">
+        <div class="muted small" id="errorText" style="color:#be123c"></div>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:12px;color:var(--muted)">Make sure your API URL in <code>pair.js</code> is correct and allows CORS from this page.</p>
+  </main>
 
   <script src="pair.js"></script>
 </body>
