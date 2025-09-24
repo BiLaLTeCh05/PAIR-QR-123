@@ -1,7 +1,25 @@
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import makeWASocket, { useMultiFileAuthState } from "@whiskeysockets/baileys";
 import P from "pino";
 
-// Random session ID generator
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Serve static files (pair.html, pair.js)
+app.use(express.static(path.join(__dirname, "public")));
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
+// ===================
+// WhatsApp BOT LOGIC
+// ===================
 function generateSessionId(prefix = "BILAL-MD~", len = 56) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let out = "";
@@ -19,14 +37,13 @@ async function startBot() {
     auth: state,
   });
 
-  // Connection listener
   sock.ev.on("connection.update", async (update) => {
     const { connection } = update;
     if (connection === "open") {
       const sessionId = generateSessionId();
       const msg = "✅ Your bot has been linked successfully!";
-      await sock.sendMessage(sock.user.id, { 
-        text: `🔑 Session ID:\n${sessionId}\n\n💬 ${msg}` 
+      await sock.sendMessage(sock.user.id, {
+        text: `🔑 Session ID:\n${sessionId}\n\n💬 ${msg}`
       });
       console.log("Bot linked & session ID sent to WhatsApp!");
     }
