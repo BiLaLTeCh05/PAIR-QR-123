@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BILAL-MD Pairing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #444;
+      text-align: left;
+      word-break: break-all;
+    }
+    .muted {
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>BILAL-MD Pairing</h2>
+    <input type="text" id="numberInput" placeholder="Enter WhatsApp Number e.g. 923001234567" />
+    <button onclick="requestPair()">Get Pairing Code</button>
+    
+    <div class="result">
+      <p><strong>Session ID:</strong> <span id="sessionId">—</span></p>
+      <p><strong>Pairing Code:</strong> <span id="pairCode">—</span></p>
+      <p class="muted" id="extraMsg"></p>
+    </div>
+  </div>
+
+  <script src="pair.js"></script>
+</body>
+</html>
