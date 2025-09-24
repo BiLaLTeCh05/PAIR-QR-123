@@ -3,12 +3,17 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from "public" folder
+// Serve static files (CSS, JS, images)
 app.use(express.static(path.join(__dirname, "public")));
 
-// Default route -> open pair.html
+// Root route -> pair.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "pair.html"));
+});
+
+// Handle 404 (Not Found)
+app.use((req, res) => {
+  res.status(404).send("Page Not Found 😢");
 });
 
 app.listen(PORT, () => {
